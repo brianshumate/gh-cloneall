@@ -18,6 +18,20 @@ var path = require('path'),
 // vendor lib
 var request = require('request');
 
+var optionsOrg = {
+  url: 'https://api.github.com/orgs/'+org+'/repos',
+  headers: {
+    'User-Agent': 'Happy Fun Ball'
+  }
+};
+
+var optionsUser = {
+  url: 'https://api.github.com/users/'+org+'/repos',
+  headers: {
+    'User-Agent': 'Happy Fun Ball'
+  }
+};
+
 if (!org) {
   console.log("Usage : %s %s <github account> [directory]\n\n" +
     "  github account : github user or organization to clone from\n" +
@@ -59,11 +73,11 @@ function handleResponse(body) {
   clone();
 }
 
-request('https://api.github.com/orgs/'+org+'/repos',function(err,res,body){
-  if (res.statusCode === 200) return handleResponse(body);
+request(optionsOrg,function(err,res,body){
+  if (!err && res.statusCode === 200) return handleResponse(body);
   console.log('Organization not found, trying user');
-  request('https://api.github.com/users/'+org+'/repos',function(err,res,body){
-    if (res.statusCode === 200) return handleResponse(body);
+  request(optionsUser,function(err,res,body){
+    if (!err && res.statusCode === 200) return handleResponse(body);
     console.log('User not found, exiting');
     process.exit(2);
   });
