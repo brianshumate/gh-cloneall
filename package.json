@@ -36,5 +36,8 @@
   "keywords": [
     "github",
     "clone"
-  ]
+  ],
+  "dependencies": {
+    "request": "^2.55.0"
+  }
 }
